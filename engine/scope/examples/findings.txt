@@ -1,0 +1,5 @@
+Stale cached price used when opening a position
+A position can be opened committed against a stale cached price, and the keeper bounty is sized from that same stale price, letting an opener extract value from LPs.
+---
+Missing access control on Junior tranche redemption queue cleanup
+The queue cleanup function can be called by any external account and removes other users' pending redemption entries before settlement, with no role check on the caller. This path is unrelated to oracle pricing, carry, rounding, or stop losses.
