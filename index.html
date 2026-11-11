@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bountybot Triage Room</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <h1>🛡️ Bountybot Triage Room</h1>
+      <p>Evidence-gated bug-bounty triage, decided together in one channel —
+         powered by the Nexconn Chat SDK.</p>
+    </div>
+    <div id="mode-badge" class="badge">…</div>
+  </header>
+
+  <div id="demo-banner" class="banner hidden">
+    LOCAL DEMO MODE — no Nexconn App Key is configured on the server, so
+    nothing here is a real Nexconn message. The engine, gates and data are
+    real; the transport is a local preview. Add an App Key + App Secret to
+    the server environment to go live.
+  </div>
+
+  <main>
+    <aside>
+      <section class="panel">
+        <h2>1 · Join as</h2>
+        <div id="identity" class="identity"></div>
+        <p class="hint">Two browser windows with different identities see
+          the same room in real time (live mode).</p>
+      </section>
+
+      <section class="panel">
+        <h2>2 · Engine</h2>
+        <button id="btn-run" disabled>▶ Run pipeline</button>
+        <button id="btn-inject" disabled>🧪 Injection demo</button>
+        <p class="hint">Runs the real Bountybot pipeline (frozen Plether
+          scope): 8 candidates enter the room, the skeptic gates broadcast
+          their verdicts — 5 blocked, 3 held at <b>warn</b> for humans.</p>
+      </section>
+
+      <section class="panel grow">
+        <h2>Decision log</h2>
+        <div id="log" class="log"></div>
+      </section>
+    </aside>
+
+    <section class="room">
+      <div class="room-head">
+        <span id="room-name">#triage-plether</span>
+        <span id="conn" class="conn">not connected</span>
+      </div>
+      <div id="messages" class="messages"></div>
+      <form id="composer">
+        <input id="composer-input" type="text" autocomplete="off"
+               placeholder="Discuss a candidate… (Enter to send)" disabled />
+        <button type="submit" id="composer-send" disabled>Send</button>
+      </form>
+    </section>
+  </main>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
