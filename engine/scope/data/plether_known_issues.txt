@@ -1,0 +1,106 @@
+# Plether Immunefi audit competition — REAL known-issues list for the duplicate gate.
+# Compiled 2026-11-09 from: the program's Immunefi scope/information page,
+# Cecuro AI audit 26 Oct 2026 (113 findings), AI scan 15 Oct 2026 (31 findings),
+# SC Audit Studio pre-audit, and packages/perps/SECURITY.md known limitations —
+# all at frozen commit a82d4fefb02768e5b3bddcc97dee371eee24fea8.
+# Full source document: KNOWN_ISSUES.md in the recon workspace.
+# Rule: a finding whose root cause matches a line here is INELIGIBLE and pays 0.
+# One known issue per line. '#' lines are comments.
+# --- A. Explicit on the Immunefi program page (open / partly fixed) ---
+Arbitrum and Pyth clock alignment: trader commits after seeing a published Pyth price and is filled at that price (HIGH-1)
+Caller can pick an older valid signed price per feed; selectively updated basket components settle at the chosen price (MED-7, partly fixed)
+Governance oracle rotation retargets already-armed stop losses (MED-13)
+Opens committed against a stale cached price; keeper bounty sized from that stale price (MED-16 and LOW-57)
+Carry rounding: trader avoids paying LP carry by checkpointing early (MED-22)
+LP refund epochs and redemption rounding: zero-payout refund epochs delay other redeemers and small redeemers lose funded withdrawal value (MED-24 and MED-29)
+Stop losses have no automatic trigger in frozen markets (MED-30, partly fixed)
+# --- B. Cecuro AI audit 26 Oct 2026 (all acknowledged unless noted) ---
+Owner releases pending claimant reserves to LP using an older mark than the engine limit (Cecuro MED-1)
+Owner miswires the settlement token leaving trader balances unbacked or stuck (Cecuro MED-2)
+Anyone can block treasury governance rotation (Cecuro MED-3)
+Attacker fills the FIFO queue with stale orders so the next trader misses the execution window (Cecuro MED-4)
+Final refund claimant locks bootstrap LP redemption refunds (Cecuro MED-5)
+Treasury can use LP withdrawal reserves for fee top-ups (Cecuro MED-6)
+Protection blocked because L2 block numbers are reused (Cecuro MED-8)
+Keeper retries protection closes with no financial limit for the trader (Cecuro MED-9)
+Liquidator liquidates a short below the cap-adjusted mark (Cecuro MED-10)
+Senior redeemer leaves other senior principal unprotected (Cecuro MED-11)
+Mixed recovery inflows strand LP revenue in ownerless pool assets (Cecuro MED-12)
+Trader is blocked from opening queued behind their own closing order (Cecuro MED-14)
+Triggered SHORT protection becomes stuck (Cecuro MED-15)
+Oracle lag blocks protection triggers (Cecuro MED-17)
+Keeper rewrites the engine mark at the same timestamp, changing liquidation price and LP settlement (Cecuro MED-18)
+Senior depositor blocks others by cycling refundable reservations (Cecuro MED-19)
+Frozen close blocked by live publish-time divergence limits (Cecuro MED-20)
+Admin rotates a feed to zero weight and bricks the oracle (Cecuro MED-21)
+Mixed-time basket blocks protection during a valid mark update (Cecuro MED-23)
+Arbitrum block numbering delays all following FIFO traders (Cecuro MED-25)
+Owner activates trading against ownerless pool assets (Cecuro MED-26)
+Owner changes the senior rate while junior accounting is stale (Cecuro MED-27)
+Trader arms new protection from a stale engine mark (Cecuro MED-28)
+Coordinated zaps marked invalid as a finding (Cecuro MED-31, invalid)
+Settled BULL collateral borrowing power marked invalid as a finding (Cecuro MED-32, invalid)
+Inverted feeds bypass the basket confidence cap (Cecuro LOW-36)
+Open with equity exactly at the initial margin threshold (Cecuro LOW-49)
+Keeper underfunds a liquidation batch item (Cecuro LOW-52)
+Senior high water mark dust via split withdrawals (Cecuro LOW-54)
+Contract caller permanently locks deferred ETH refunds (Cecuro LOW-62)
+Partial LP settlement rounding dust taken from redeemers (Cecuro LOW-63)
+Same-window redeemer burns small LP shares for zero assets (Cecuro LOW-67)
+Token balances stranded in MarginClearinghouse outside official paths (Cecuro LOW series)
+Zero-share junior fee accrual skips hours permanently (Cecuro LOW-27)
+# --- C. AI scan 15 Oct 2026 (31 findings, all known) ---
+Checkpoint frequency compounds the configured simple senior coupon (AI scan 1)
+Close-only-ineligible open at the FIFO head blocks all following risk-reducing closes (AI scan 2)
+Claim-reserved pool cash dilutes carry utilization (AI scan 3)
+Deferred trader claims inflate open skew capacity and reduce VPI (AI scan 4)
+Frequent position checkpoints discard fractional carry (AI scan 5)
+Live oracle paths allow component skew up to staleness limits instead of the configured divergence limit (AI scan 6)
+Observable settlement config digest does not commit to FAD override-calendar changes (AI scan 7)
+Ordinary close orders are forced without an execution bounty (AI scan 8)
+Permissionless frozen-state settlement can apply a redemption fee that was never snapshotted (AI scan 9)
+Protection trigger bounty is paid before the zero-bounty close executes (AI scan 10)
+Redeem allocation dust returned to the pool is not restored to pool accounting (AI scan 11)
+Refundable senior reservations cause temporary capacity denial (AI scan 12)
+Stale cached marks underfund open-order bounties and global FIFO cleanup (AI scan 13)
+Current pool depth is applied retroactively to the whole carry interval (AI scan 14)
+Direct expiry removes the accounting mark needed to pay a nonzero keeper bounty (AI scan 15)
+Failed protection attempts pay the bounty unconditionally instead of holding it for retry (AI scan 16)
+Later mark refresh makes historical-price orders permanently out of order (AI scan 17)
+Lifecycle commitment validation rejects all pledge-funded close bounties (AI scan 18)
+Observable settlement config digest omits the pool-reconcile oracle policy field (AI scan 19)
+Open previews invert the search direction of long and short liquidation prices (AI scan 20)
+Open quote pruning underflows when costs reduce existing position margin (AI scan 21)
+Order execution accepts an oracle update older than the cached engine mark (AI scan 22)
+Partial redemption claims can be misclassified as queue corruption (AI scan 23)
+Pool payouts are credited nominally without verifying settlement token receipt (AI scan 24)
+Protection can match the next position with the same side and size (AI scan 25)
+Self-deposit paths credit the nominal amount instead of tokens actually received (AI scan 26)
+Settlement health reads side state with a mismatched selector width (AI scan 27)
+Settlement oracle monitoring rejects a valid close-only snapshot (AI scan 28)
+State-driven VPI increases are misclassified as user-invalid margin failures (AI scan 29)
+Temporary pool liquidity reduces the skew-increasing close charge (AI scan 30)
+Temporary pool-liquidity reduction amplifies the skew-reducing close rebate (AI scan 31)
+Unbounded per-account order queue makes liquidation exceed the block gas limit (AI scan 32)
+Uncapped slippage check can admit a LONG open below the target price (AI scan 33)
+# --- D. SC Audit Studio pre-audit (all known, incl. accepted risk) ---
+Deposit before yield accrues dilutes earlier depositors (SC-H1)
+Zero-amount withdraw or redeem on TrancheVault resets a victim LP cooldown repeatedly (SC-H2)
+Valid same-side increases rejected as dust orders (SC-M2)
+Fresh negative vpiAccrued missing from post-open initial margin (SC-M3)
+Risk-free option inside the 60 second oracle window (SC-M4)
+Plain stale reconcile intervals back-accrue senior yield (SC-M5)
+Price cap reached makes the protocol unusable (SC-M6)
+OrderRouter can be denial-of-serviced with worthless withdraw orders (SC-M7)
+Permissionless zero-value senior withdraw persists (SC-L1)
+# --- E. SECURITY.md known limitations (accepted, not payable as the same root cause) ---
+Frozen-oracle windows prioritise close liveness over price freshness; frozen close uses a fixed spread that does not grow with staleness
+Live basket component selection within the staleness window is an accepted limitation
+Users cannot cancel a queued intent manually; terminal or config-invalid client ids cannot be reused
+Cleanup of expired queue entries is bounded and heavy queues need many calls
+Failed close and failed protection cleanup are unpaid; protection retry creates a new zero-bounty record
+Terminal NAV is only as accurate as its authenticated mark; marked receivables are not cash
+TerminalNavBookV2 is non-upgradeable with no repair path
+Position carry rounds down to 6-decimal USDG; zero-share junior maintenance-fee checkpoints can be skipped
+Liquidation does not account for a fresh VPI delta; lifetime clamp zeroes rebate-only round trips
+Direct USDG transfers to the clearinghouse outside official paths are a recovery limitation
