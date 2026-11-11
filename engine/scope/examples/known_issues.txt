@@ -1,0 +1,11 @@
+# Example known-issues list — modelled on the public categories published for
+# the Plether Immunefi audit competition (commit a82d4fe). Illustrative only;
+# the real run loads the program's official known-issues page verbatim.
+# One issue per line.
+Arbitrum and Pyth clock alignment: commit time is Arbitrum block timestamp trailing a published Pyth price, trader can commit after seeing price
+Carry rounding in LP refund epochs and redemption rounding (Cecuro MED-24, MED-29, MED-22)
+Stop losses have no automatic frozen market trigger (Cecuro MED-30)
+Governance oracle rotation retargets armed stop losses (Cecuro MED-13)
+Opens committed against a stale cached price and keeper bounty sized from stale price (Cecuro MED-16)
+Caller can pick an older valid signed price per feed (Cecuro MED-7)
+Known limitation: live basket component selection
